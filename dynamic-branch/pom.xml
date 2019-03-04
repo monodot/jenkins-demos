@@ -6,5 +6,5 @@
  
   <groupId>com.cleverbuilder.jenkinsdemos</groupId>
   <artifactId>dynamic-branch-project</artifactId>
-  <version>1.0</version>
+  <version>1.0-DYNAMIC-BRANCH</version>
 </project>
