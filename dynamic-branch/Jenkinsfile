@@ -1,0 +1,10 @@
+pipeline {
+    stages {
+        stage('Example Build') {
+            steps {
+                echo 'Hello from the master branch.'
+            }
+        }
+    }
+}
+
