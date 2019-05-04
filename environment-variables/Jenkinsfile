@@ -14,7 +14,7 @@ pipeline {
                 // You should see the variables declared further below
                 sh 'printenv | sort'
 
-                sh "echo I like to eat ${FAVOURITE_EGG_TYPE} eggs"
+                echo "I like to eat ${FAVOURITE_EGG_TYPE} eggs"
                 sh "echo And I like to drink ${FAVOURITE_DRINK}"
                 sh "echo My favourite city is ${FAVOURITE_CITY}"
 
