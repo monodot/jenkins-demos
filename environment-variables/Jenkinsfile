@@ -46,6 +46,20 @@ pipeline {
             }
         }
 
+        stage('reading from a file') {
+            steps {
+                sh 'curl -OL https://raw.githubusercontent.com/monodot/jenkins-demos/master/environment-variables/extravars.properties'
+
+                script {
+                    def props = readProperties file: 'extravars.properties'
+                    env.WEATHER = props.WEATHER
+                }
+
+                sh "echo The weather is $WEATHER"
+            }
+
+        }
+
     }
 
 }
