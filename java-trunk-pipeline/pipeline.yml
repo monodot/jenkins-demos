@@ -26,6 +26,8 @@ spec:
         value: .
       - name: QUAY_SECRET_NAME
         value: quay
+      - name: CREATE_RELEASE
+        value: "no"
       jenkinsfilePath: Jenkinsfile
     type: JenkinsPipeline
   triggers: []
