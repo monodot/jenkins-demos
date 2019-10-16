@@ -23,12 +23,12 @@ pipeline {
 
             steps {
                 script {
-                    def source = "docker://docker-registry.default.svc/${input.imageNamespace}/${input.imageName}:latest"
-                    def destination = "docker://${input.registryFQDN}/${input.imageNamespace}/${input.imageName}:${input.imageVersion}"
+                    def source = "docker://docker-registry.default.svc/hello/hello:latest"
+                    def destination = "docker://quay-03ae.apps.shared.na.openshift.opentlc.com/hello/hello:latest"
                 }
-                
+
                 echo "Copying image to external registry..."
-                sh "skopeo copy $authFileArg $srcTlsVerifyArg $destTlsVerifyArg $destCertDirArg $srcCertDirArg $source $destination"
+                sh "skopeo copy --authfile /var/run/secrets/kubernetes.io/dockerconfigjson/.dockerconfigjson $source $destination"
             }
         }
 

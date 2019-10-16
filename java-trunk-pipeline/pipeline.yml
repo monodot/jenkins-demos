@@ -24,6 +24,8 @@ spec:
         value: master
       - name: BUILD_CONTEXT_DIR
         value: .
+      - name: QUAY_SECRET_NAME
+        value: quay
       jenkinsfilePath: Jenkinsfile
     type: JenkinsPipeline
   triggers: []
