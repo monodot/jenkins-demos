@@ -20,7 +20,11 @@ pipeline {
 
     stages {
         stage('Publish to Quay') {
-            agent 'jenkins-slave-image-mgmt'
+          agent {
+              node {
+                  label 'jenkins-slave-image-mgmt'
+              }
+          }
 
             steps {
                 def source = "docker://docker-registry.default.svc/${input.imageNamespace}/${input.imageName}:latest"
@@ -32,7 +36,11 @@ pipeline {
         }
 
         stage('Make release') {
-            agent 'jenkins-slave-mvn'
+            agent {
+                node {
+                    label 'jenkins-slave-mvn'
+                }
+            }
 
             steps {
                 sh "mvn versions:set "
