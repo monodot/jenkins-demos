@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: List
+items:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: jenkins-slave-base-centos7
+  spec:
+    dockerImageRepository: docker.io/openshift/jenkins-slave-base-centos7
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    name: jenkins-slave-image-mgmt
+  spec:
+    lookupPolicy:
+      local: false
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    name: jenkins-slave-image-mgmt
+  spec:
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: jenkins-slave-image-mgmt:latest
+    postCommit: {}
+    resources: {}
+    source:
+      dockerfile: |-
+        FROM openshift/jenkins-slave-base-centos7:v3.11
+        RUN yum install -y skopeo
+        USER 1001
+      type: Dockerfile
+    strategy:
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: jenkins-slave-base-centos7:v3.11
+      type: Docker
+    triggers: []
+  status:
+    lastVersion: 0

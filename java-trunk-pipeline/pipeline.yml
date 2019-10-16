@@ -1,0 +1,29 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    application: java-trunk-pipeline
+  name: java-trunk-pipeline
+spec:
+  nodeSelector: null
+  output: {}
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    git:
+      ref: master
+      uri: https://github.com/monodot/jenkins-demos.git
+    contextDir: java-trunk-pipeline
+  strategy:
+    jenkinsPipelineStrategy:
+      env:
+      - name: APPLICATION_SOURCE_REPO
+        value: https://github.com/monodot/simple-camel-app
+      - name: APPLICATION_SOURCE_REF
+        value: master
+      - name: BUILD_CONTEXT_DIR
+        value: .
+      jenkinsfilePath: Jenkinsfile
+    type: JenkinsPipeline
+  triggers: []

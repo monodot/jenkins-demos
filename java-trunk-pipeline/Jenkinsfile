@@ -1,0 +1,48 @@
+openshift.withCluster() {
+    env.NAMESPACE = openshift.project()
+    env.SKOPEO_IMAGE = openshift.selector( 'is/jenkins-slave-image-mgmt' ).object().status.dockerImageRepository
+    env.APP_NAME = "${env.JOB_NAME}".replaceAll(/-?pipeline-?/, '').replaceAll(/-?${env.NAMESPACE}-?/, '')
+    echo "Starting Pipeline for ${APP_NAME}..."
+    def projectBase = "${env.NAMESPACE}".replaceAll(/-dev/, '')
+    env.STAGE1 = "${projectBase}-dev"
+    env.STAGE2 = "${projectBase}-stage"
+    env.STAGE3 = "${projectBase}-prod"
+}
+
+pipeline {
+
+    agent any
+
+    environment {
+
+
+    }
+
+    stages {
+        stage('Publish to Quay') {
+            agent 'jenkins-slave-image-mgmt'
+
+            steps {
+                def source = "docker://docker-registry.default.svc/${input.imageNamespace}/${input.imageName}:latest"
+                def destination = "docker://${input.registryFQDN}/${input.imageNamespace}/${input.imageName}:${input.imageVersion}"
+
+                echo "Copying image to external registry..."
+                sh "skopeo copy $authFileArg $srcTlsVerifyArg $destTlsVerifyArg $destCertDirArg $srcCertDirArg $source $destination"
+            }
+        }
+
+        stage('Make release') {
+            agent 'jenkins-slave-mvn'
+
+            steps {
+                sh "mvn versions:set "
+                // git branch for release
+                //
+
+            }
+
+        }
+
+    }
+
+}
