@@ -13,23 +13,20 @@ pipeline {
 
     agent any
 
-    environment {
-
-
-    }
-
     stages {
         stage('Publish to Quay') {
-          agent {
-              node {
-                  label 'jenkins-slave-image-mgmt'
-              }
-          }
+            agent {
+                node {
+                    label 'jenkins-slave-image-mgmt'
+                }
+            }
 
             steps {
-                def source = "docker://docker-registry.default.svc/${input.imageNamespace}/${input.imageName}:latest"
-                def destination = "docker://${input.registryFQDN}/${input.imageNamespace}/${input.imageName}:${input.imageVersion}"
-
+                script {
+                    def source = "docker://docker-registry.default.svc/${input.imageNamespace}/${input.imageName}:latest"
+                    def destination = "docker://${input.registryFQDN}/${input.imageNamespace}/${input.imageName}:${input.imageVersion}"
+                }
+                
                 echo "Copying image to external registry..."
                 sh "skopeo copy $authFileArg $srcTlsVerifyArg $destTlsVerifyArg $destCertDirArg $srcCertDirArg $source $destination"
             }
