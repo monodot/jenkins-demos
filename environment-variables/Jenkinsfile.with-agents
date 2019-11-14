@@ -54,8 +54,20 @@ pipeline {
                 // because the shell is aware of the env var YESTERDAYS_WEATHER
                 sh 'echo Yesterdays weather was ${YESTERDAYS_WEATHER}'
 
-                // Attempt to check out a specific branch
-                git url: '${APPLICATION_SOURCE_REPO}', branch: '${MY_BRANCH}'
+            }
+        }
+
+        stage('git checkout') {
+            agent {
+                label 'maven'
+            }
+            steps {
+                // Attempt to check out a specific branch....
+
+                // THIS fails, because '${MY_BRANCH}' is used literally as the name of the branch
+                //git url: '${APPLICATION_SOURCE_REPO}', branch: '${MY_BRANCH}'
+
+                git url: "${APPLICATION_SOURCE_REPO}", branch: "${MY_BRANCH}"
             }
         }
     }
