@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: Template
+labels:
+  template: jenkins-pipeline
+metadata:
+  annotations:
+    description: OpenShift pipeline build using Jenkins
+    iconClass: icon-java
+    tags: java,jenkins-ci
+  name: jenkins-pipeline
+objects:
+  - kind: "BuildConfig"
+    apiVersion: "v1"
+    metadata:
+      labels:
+        application: ${APPLICATION_NAME}
+      name: "${APPLICATION_NAME}-pipeline"
+    spec:
+      source:
+        type: Git
+        git:
+          uri: "${SOURCE_REPOSITORY_URL}"
+          ref: "${SOURCE_REPOSITORY_REF}"
+        contextDir: "${CONTEXT_DIR}"
+      strategy:
+        type: "JenkinsPipeline"
+        jenkinsPipelineStrategy:
+          jenkinsfilePath: "${PIPELINE_SCRIPT}"
+          env:
+            - name: "APPLICATION_NAME"
+              value: "${APPLICATION_NAME}"
+            - name: "APPLICATION_SOURCE_REPO"
+              value: "${APPLICATION_SOURCE_REPO}"
+            - name: "APPLICATION_SOURCE_REF"
+              value: "${APPLICATION_SOURCE_REF}"
+            - name: "BUILD_CONTEXT_DIR"
+              value: "${APPLICATION_CONTEXT_DIR}"
+parameters:
+  - description: Git source URI for application
+    name: SOURCE_REPOSITORY_URL
+    required: true
+    value: https://github.com/monodot/jenkins-demos
+  - description: Git branch/tag reference
+    name: SOURCE_REPOSITORY_REF
+    value: master
+  - description: Path within Git project where Jenkinsfile is located; empty for root project directory.
+    name: CONTEXT_DIR
+    value: environment-variables
+  - description: Path within Git project pointing to the pipeline run script
+    name: PIPELINE_SCRIPT
+    value: Jenkinsfile
+  - description: The name for the application.
+    name: APPLICATION_NAME
+    required: true
+    value: env-var
+  - description: Source code repo for demo app
+    name: APPLICATION_SOURCE_REPO
+    required: true
+    value: https://github.com/monodot/hello-java.git
+  - description: Source code branch for demo app
+    name: APPLICATION_SOURCE_REF
+    value: master
+  - description: Directory where POM file will be
+    name: APPLICATION_CONTEXT_DIR
+    required: true
+    value: .

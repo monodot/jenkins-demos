@@ -48,6 +48,7 @@ pipeline {
 
         stage('reading from a file') {
             steps {
+                // Demonstrate pulling some environment variables from a URL/file
                 sh 'curl -OL https://raw.githubusercontent.com/monodot/jenkins-demos/master/environment-variables/extravars.properties'
 
                 script {

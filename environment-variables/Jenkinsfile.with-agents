@@ -75,10 +75,10 @@ pipeline {
                 // used literally as the name of the branch
                 //git url: '${APPLICATION_SOURCE_REPO}', branch: '${MY_BRANCH}'
 
-                // This works, because ENV_BRANCH is expanded by Jenkins into the real branch name.
+                // This works, because ENV_BRANCH is expanded by Jenkins into the real branch name, demo-branch
                 git url: "${APPLICATION_SOURCE_REPO}", branch: "${ENV_BRANCH}"
 
-                // This works, because DEMO_BRANCH is expanded by Jenkins into the real branch name.
+                // This works, because DEMO_BRANCH is expanded by Jenkins into the real branch name, demo2-branch
                 git url: "${APPLICATION_SOURCE_REPO}", branch: "${DEMO_BRANCH}"
 
             }
