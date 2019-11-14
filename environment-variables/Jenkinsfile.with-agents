@@ -22,15 +22,16 @@ pipeline {
                     // This will set an environment variable
                     env.YESTERDAYS_WEATHER = 'foggy'
 
-                    env.MY_BRANCH = 'demo-branch'
+                    env.ENV_BRANCH = 'demo-branch'
+
+                    DEMO_BRANCH = 'demo2-branch'
                 }
             }
         }
 
         stage('read a var') {
             agent {
-                // Even though this stage uses the same type of agent as the previous stage,
-                // Jenkins Kubernetes plugin will still spin up a BRAND NEW pod.
+                // Using a different type of agent, variables can still be shared.
                 label 'maven'
             }
             steps {
@@ -62,14 +63,24 @@ pipeline {
                 label 'maven'
             }
             steps {
-                // Now we'll see how variables are used in other Jenkins steps.
+                // This prints out all environment variables, sorted alphabetically
+                // The env var ENV_BRANCH will appear in this list,
+                // but the variable DEMO_BRANCH will not.
+                sh 'printenv | sort'
+
+                // Now we'll see how variables are used in the Jenkins git step.
                 // We'll attempt to check out a specific branch....
 
-                // THIS fails, because '${MY_BRANCH}' is used literally as the name of the branch
+                // This fails, because single-quotes means '${MY_BRANCH}' is
+                // used literally as the name of the branch
                 //git url: '${APPLICATION_SOURCE_REPO}', branch: '${MY_BRANCH}'
 
-                // THIS works, because MY_BRANCH is expanded by Jenkins into the real branch name.
+                // This works, because MY_BRANCH is expanded by Jenkins into the real branch name.
                 git url: "${APPLICATION_SOURCE_REPO}", branch: "${MY_BRANCH}"
+
+                // This works, because DEMO_BRANCH is expanded by Jenkins into the real branch name.
+                git url: "${APPLICATION_SOURCE_REPO}", branch: "${DEMO_BRANCH}"
+
             }
         }
     }
