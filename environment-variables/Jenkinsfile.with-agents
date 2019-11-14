@@ -25,9 +25,14 @@ pipeline {
 
         stage('read a var') {
             agent {
+                // Even though this uses the same type of agent as the previous stage,
+                // Jenkins Kubernetes plugin will spin up a new pod.
                 label 'maven'
             }
             steps {
+                // Print the environment variables
+                sh 'printenv | sort'
+
                 sh 'echo The tube is currently ${TUBE_STATUS}'
             }
         }
