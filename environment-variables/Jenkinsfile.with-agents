@@ -37,6 +37,7 @@ pipeline {
                 // This will print 'The tube is currently delayed'
                 // because the value for TUBE_STATUS set in the script block is carried over.
                 sh 'echo The tube is currently ${TUBE_STATUS}'
+                // And now with double-quotes
                 sh "echo The tube is currently ${TUBE_STATUS}"
 
                 sh 'echo Yesterday\'s weather was ${YESTERDAYS_WEATHER}'
