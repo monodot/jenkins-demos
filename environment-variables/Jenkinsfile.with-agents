@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('set a var') {
             agent {
-                label 'maven'
+                label 'master'
             }
 
             steps {
@@ -35,8 +35,8 @@ pipeline {
             }
             steps {
                 // This prints out all environment variables, sorted alphabetically
-                // The env var YESTERDAYS_WEATHER appears defined in this list,
-                // but the variable TUBE_STATUS does not.
+                // The env var YESTERDAYS_WEATHER will appear in this list,
+                // but the variable TUBE_STATUS will not.
                 sh 'printenv | sort'
 
                 // This will print 'The tube is currently '
@@ -62,11 +62,13 @@ pipeline {
                 label 'maven'
             }
             steps {
-                // Attempt to check out a specific branch....
+                // Now we'll see how variables are used in other Jenkins steps.
+                // We'll attempt to check out a specific branch....
 
                 // THIS fails, because '${MY_BRANCH}' is used literally as the name of the branch
                 //git url: '${APPLICATION_SOURCE_REPO}', branch: '${MY_BRANCH}'
 
+                // THIS works, because MY_BRANCH is expanded by Jenkins into the real branch name.
                 git url: "${APPLICATION_SOURCE_REPO}", branch: "${MY_BRANCH}"
             }
         }
