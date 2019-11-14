@@ -18,7 +18,7 @@ pipeline {
                 sh 'printenv | sort'
 
                 script {
-                    TUBE_STATUS = 'delayed'
+                    env.TUBE_STATUS = 'delayed'
                 }
             }
         }
