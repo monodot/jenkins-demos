@@ -41,8 +41,8 @@ pipeline {
 
                 // This will print 'The tube is currently '
                 // because single-quotes causes the expression to be evaluated
-                // by bash (NOT Jenkins); and bash doesn't know the value of
-                // TUBE_STATUS, because it wasn't set an environment variable.
+                // by bash (NOT Jenkins); and the shell doesn't know the value of
+                // TUBE_STATUS, because it wasn never set as an environment variable.
                 sh 'echo The tube is currently ${TUBE_STATUS}'
 
                 // And now with double-quotes, this will print:
@@ -50,7 +50,12 @@ pipeline {
                 // This is because the variable TUBE_STATUS is expanded by Jenkins
                 sh "echo The tube is currently ${TUBE_STATUS}"
 
+                // This will print: Yesterdays weather was foggy
+                // because the shell is aware of the env var YESTERDAYS_WEATHER
                 sh 'echo Yesterdays weather was ${YESTERDAYS_WEATHER}'
+
+                // Attempt to check out a specific branch
+                git url: '${APPLICATION_SOURCE_REPO}', branch: '${MY_BRANCH}'
             }
         }
     }
