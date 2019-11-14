@@ -1,0 +1,36 @@
+pipeline {
+
+    agent any
+
+    environment {
+        FAVOURITE_FRUIT = 'tomato'
+    }
+
+    stages {
+        stage('set a var') {
+            agent {
+                label 'maven'
+            }
+
+            steps {
+                // This prints out all environment variables, sorted alphabetically
+                // You should see the variables declared further below
+                sh 'printenv | sort'
+
+                script {
+                    TUBE_STATUS = 'delayed'
+                }
+            }
+        }
+
+        stage('read a var') {
+            agent {
+                label 'maven'
+            }
+            steps {
+                sh 'echo The tube is currently ${TUBE_STATUS}'
+            }
+        }
+    }
+
+}
