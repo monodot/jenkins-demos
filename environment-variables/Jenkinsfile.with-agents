@@ -14,7 +14,6 @@ pipeline {
 
             steps {
                 // This prints out all environment variables, sorted alphabetically
-                // You should see the variables declared further below
                 sh 'printenv | sort'
 
                 script {
@@ -26,12 +25,12 @@ pipeline {
 
         stage('read a var') {
             agent {
-                // Even though this uses the same type of agent as the previous stage,
-                // Jenkins Kubernetes plugin will spin up a new pod.
+                // Even though this stage uses the same type of agent as the previous stage,
+                // Jenkins Kubernetes plugin will still spin up a BRAND NEW pod.
                 label 'maven'
             }
             steps {
-                // Print the environment variables
+                // This prints out all environment variables, sorted alphabetically
                 sh 'printenv | sort'
 
                 // This will print 'The tube is currently delayed'
